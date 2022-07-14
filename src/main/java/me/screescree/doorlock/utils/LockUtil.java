@@ -21,6 +21,11 @@ public class LockUtil {
     @Nullable
     public static Block getBottomDoorHalfLookingAt(Player player) {
         Block block = player.getTargetBlockExact(5);
+        return getBottomDoorHalf(block);
+    }
+
+    @Nullable
+    public static Block getBottomDoorHalf(Block block) {
         if (block == null || !Tag.WOODEN_DOORS.isTagged(block.getType())) {
             return null;
         }
@@ -40,6 +45,10 @@ public class LockUtil {
     @Nullable
     public static UUID getKeyLockUuid(ItemStack itemStack) {
         if (itemStack == null) {
+            return null;
+        }
+
+        if (itemStack.getItemMeta() == null) {
             return null;
         }
 
