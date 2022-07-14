@@ -8,7 +8,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -86,6 +88,8 @@ public class CreateKey extends CustomCommand {
         ItemMeta keyMeta = key.getItemMeta();
         keyMeta.setDisplayName(ColorFormat.colorize("&eKey"));
         keyMeta.setLore(List.of(ColorFormat.colorize("&7A key for a door.")));
+        keyMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
+        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         
         PersistentDataContainer keyContainer = keyMeta.getPersistentDataContainer();
         keyContainer.set(new NamespacedKey(DoorLock.getInstance(), "LockUUID"), new PersistentDataType_UUID(), lockUUID);
