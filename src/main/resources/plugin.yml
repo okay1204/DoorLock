@@ -1,0 +1,7 @@
+main: me.screescree.doorlock.DoorLock
+name: DoorLock
+description: Adds a fully functional door lock system, with keys that can be used to lock and unlock doors.
+version: 1.0
+author: screescree
+api-version: 1.18
+
