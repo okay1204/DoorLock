@@ -63,23 +63,23 @@ public class CreateKey extends CustomCommand {
         }
 
 
-        // get the LockUUID from the door, otherwise assign the door a LockUUID if it doesn't already have one
+        // get the LockUuid from the door, otherwise assign the door a LockUuid if it doesn't already have one
         UUID lockUUID;
         
         PersistentDataContainer container = new CustomBlockData(doorBlock, DoorLock.getInstance());
-        if (container.has(new NamespacedKey(DoorLock.getInstance(), "LockUUID"), new PersistentDataType_UUID())) {
+        if (container.has(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID())) {
             // if the door owner is not the executor of the command, then they can't create a key for the door
-            if (!container.get(new NamespacedKey(DoorLock.getInstance(), "OwnerUUID"), new PersistentDataType_UUID()).equals(player.getUniqueId())) {
+            if (!container.get(new NamespacedKey(DoorLock.getInstance(), "OwnerUuid"), new PersistentDataType_UUID()).equals(player.getUniqueId())) {
                 sender.sendMessage(ColorFormat.colorize("&cA key created by another player already exists for this door."));
                 return true;
             }
 
-            lockUUID = container.get(new NamespacedKey(DoorLock.getInstance(), "LockUUID"), new PersistentDataType_UUID());
+            lockUUID = container.get(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID());
         }
         else {
             lockUUID = UUID.randomUUID();
-            container.set(new NamespacedKey(DoorLock.getInstance(), "LockUUID"), new PersistentDataType_UUID(), lockUUID);
-            container.set(new NamespacedKey(DoorLock.getInstance(), "OwnerUUID"), new PersistentDataType_UUID(), player.getUniqueId());
+            container.set(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID(), lockUUID);
+            container.set(new NamespacedKey(DoorLock.getInstance(), "OwnerUuid"), new PersistentDataType_UUID(), player.getUniqueId());
         }
 
         // create a key for the door
@@ -92,7 +92,7 @@ public class CreateKey extends CustomCommand {
         keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         
         PersistentDataContainer keyContainer = keyMeta.getPersistentDataContainer();
-        keyContainer.set(new NamespacedKey(DoorLock.getInstance(), "LockUUID"), new PersistentDataType_UUID(), lockUUID);
+        keyContainer.set(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID(), lockUUID);
 
         key.setItemMeta(keyMeta);
 

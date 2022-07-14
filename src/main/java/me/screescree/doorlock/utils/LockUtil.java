@@ -1,13 +1,21 @@
 package me.screescree.doorlock.utils;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+
+import me.screescree.doorlock.DoorLock;
+import me.screescree.doorlock.persistenttype.PersistentDataType_UUID;
 
 public class LockUtil {
     @Nullable
@@ -27,5 +35,20 @@ public class LockUtil {
         }
 
         return block;
+    }
+
+    @Nullable
+    public static UUID getKeyLockUuid(ItemStack itemStack) {
+        if (itemStack == null) {
+            return null;
+        }
+
+        PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+        if (!container.has(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID())) {
+            return null;
+        }
+        else {
+            return container.get(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID());
+        }
     }
 }
