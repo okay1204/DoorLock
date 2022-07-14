@@ -19,6 +19,7 @@ import com.jeff_media.customblockdata.CustomBlockData;
 
 import me.screescree.doorlock.CustomCommand;
 import me.screescree.doorlock.DoorLock;
+import me.screescree.doorlock.persistenttype.PersistentDataType_BOOLEAN;
 import me.screescree.doorlock.persistenttype.PersistentDataType_UUID;
 import me.screescree.doorlock.utils.ColorFormat;
 import me.screescree.doorlock.utils.LockUtil;
@@ -80,6 +81,7 @@ public class CreateKey extends CustomCommand {
             lockUUID = UUID.randomUUID();
             container.set(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID(), lockUUID);
             container.set(new NamespacedKey(DoorLock.getInstance(), "OwnerUuid"), new PersistentDataType_UUID(), player.getUniqueId());
+            container.set(new NamespacedKey(DoorLock.getInstance(), "Locked"), new PersistentDataType_BOOLEAN(), false);
         }
 
         // create a key for the door

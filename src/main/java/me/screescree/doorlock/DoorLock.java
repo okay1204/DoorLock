@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.jeff_media.customblockdata.CustomBlockData;
 
 import me.screescree.doorlock.commands.CreateKey;
+import me.screescree.doorlock.listeners.LockDoor;
 import me.screescree.doorlock.listeners.NoKeyPlace;
 
 public class DoorLock extends JavaPlugin
@@ -21,6 +22,7 @@ public class DoorLock extends JavaPlugin
         // listeners
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new NoKeyPlace(), this);
+        pluginManager.registerEvents(new LockDoor(), this);
 
         // custom commands
         new CreateKey();
