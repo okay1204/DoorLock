@@ -71,8 +71,13 @@ public class CreateKey extends CustomCommand {
         if (container.has(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID())) {
             // if the door owner is not the executor of the command, then they can't create a key for the door
             if (!container.get(new NamespacedKey(DoorLock.getInstance(), "OwnerUuid"), new PersistentDataType_UUID()).equals(player.getUniqueId())) {
-                sender.sendMessage(ColorFormat.colorize("&cA key created by another player already exists for this door."));
-                return true;
+                if (!player.hasPermission("doorlock.admin.createkey")) {
+                    sender.sendMessage(ColorFormat.colorize("&cA key created by another player already exists for this door."));
+                    return true;
+                }
+                else {
+                    sender.sendMessage(ColorFormat.colorize("&7A key created by another player already exists for this door, but you have doorlock.admin.createkey permission."));
+                }
             }
 
             lockUUID = container.get(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID());

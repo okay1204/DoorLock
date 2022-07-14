@@ -15,3 +15,17 @@ permissions:
   doorlock.createkey:
     description: "Allows players to create a key for a door."
     default: true
+
+  doorlock.admin:
+    description: "Allows the user to use the plugin's admin features."
+    default: op
+    children:
+      doorlock.admin.createkey: true
+      doorlock.admin.bypasslocks: true
+
+  doorlock.admin.createkey:
+    description: "Allows players to create a key for a door, regardless of whether the door already has a key created by someone else for it."
+    default: op
+  doorlock.admin.bypasslocks:
+    description: "Allows players to bypass the lock of all doors."
+    default: op

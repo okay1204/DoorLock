@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -37,19 +38,20 @@ public class LockDoor implements Listener {
         }
 
         UUID keyLockUuid = event.getItem() != null ? LockUtil.getKeyLockUuid(event.getItem()) : null;
+        Player player = event.getPlayer();
         // ignore second event call if player has a key in both hands
-        if (event.getHand() == EquipmentSlot.OFF_HAND && LockUtil.getKeyLockUuid(event.getPlayer().getInventory().getItemInMainHand()) != null) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND && LockUtil.getKeyLockUuid(player.getInventory().getItemInMainHand()) != null) {
             return;
         }
 
-        if (keyLockUuid != null && event.getPlayer().isSneaking()) {
+        if (keyLockUuid != null && player.isSneaking()) {
             PersistentDataContainer doorContainer = new CustomBlockData(doorBlock, DoorLock.getInstance());
             if (
                 !doorContainer.has(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID()) ||
                 !doorContainer.get(new NamespacedKey(DoorLock.getInstance(), "LockUuid"), new PersistentDataType_UUID()).equals(keyLockUuid)
             ) {
-                event.getPlayer().sendMessage(ColorFormat.colorize("&cThis key does not match the door."));
-                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                player.sendMessage(ColorFormat.colorize("&cThis key does not match the door."));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
                 return;
             }
 
@@ -58,8 +60,8 @@ public class LockDoor implements Listener {
             doorContainer.set(new NamespacedKey(DoorLock.getInstance(), "Locked"), new PersistentDataType_BOOLEAN(), locked);
 
             // send action bar to player
-            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorFormat.colorize("&eDoor is " + (locked ? "&cLocked" : "&aUnlocked"))));
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_CHEST_LOCKED, 1, 1);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorFormat.colorize("&eDoor is " + (locked ? "&cLocked" : "&aUnlocked"))));
+            player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1, 1);
         }
         else {
             PersistentDataContainer doorContainer = new CustomBlockData(doorBlock, DoorLock.getInstance());
@@ -74,9 +76,14 @@ public class LockDoor implements Listener {
 
             // cancel the event if the door is locked and the player has no key
             if (locked && (keyLockUuid == null || !keyLockUuid.equals(lockUuid))) {
-                event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorFormat.colorize("&eDoor is &cLocked")));
-                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_CHEST_LOCKED, 1, 1);
-                event.setCancelled(true);
+                if (player.hasPermission("doorlock.admin.bypasslocks")) {
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorFormat.colorize("&eDoor is &cLocked&e, but you have &6doorlock.admin.bypasslocks&e permission.")));
+                }
+                else {
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorFormat.colorize("&eDoor is &cLocked")));
+                    player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1, 1);
+                    event.setCancelled(true);
+                }
             }
         }
     }
