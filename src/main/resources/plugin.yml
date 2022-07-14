@@ -5,3 +5,13 @@ version: 1.0
 author: screescree
 api-version: 1.18
 
+commands:
+  createkey:
+    description: "Creates a key for the door you are looking at. You may only do this if the door does not already have a key created by someone else for it."
+    usage: "§cUsage: /<command> [<amount>]"
+    permission: "doorlock.createkey"
+
+permissions:
+  doorlock.createkey:
+    description: "Allows players to create a key for a door."
+    default: true

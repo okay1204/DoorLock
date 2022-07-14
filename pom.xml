@@ -24,6 +24,10 @@
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+    <repository>
+      <id>jeff-media-gbr</id>
+      <url>https://hub.jeff-media.com/nexus/repository/jeff-media-public/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -33,6 +37,12 @@
           <version>1.18.1-R0.1-SNAPSHOT</version>
           <scope>provided</scope>
       </dependency>
+      <dependency>
+        <groupId>com.jeff_media</groupId>
+        <artifactId>CustomBlockData</artifactId>
+        <version>2.0.1</version>
+        <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -43,6 +53,12 @@
           <version>3.3.0</version>
           <configuration>
               <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+              <relocations>
+                <relocation>
+                    <pattern>com.jeff_media.customblockdata</pattern>
+                    <shadedPattern>me.screescree.customblockdata</shadedPattern>
+                </relocation>
+            </relocations>
           </configuration>
           <executions>
               <execution>
